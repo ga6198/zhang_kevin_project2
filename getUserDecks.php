@@ -12,16 +12,9 @@ session_start();
 require_once 'config/db.php';
 
 $data = array();
-
-// sql statements to get only user's decks
-/*SELECT * 
-FROM decks d
-INNER JOIN ownsdeck od
-    on d.deck_id = od.deck_id
-INNER JOIN users u
-    on od.user_id = u.id;*/
 	
 $user_id = $_POST['user_id'];
+// sql statements to get only user's decks
 
 $query = "SELECT * FROM decks d
 	INNER JOIN ownsdeck od
