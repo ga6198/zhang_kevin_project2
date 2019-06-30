@@ -55,9 +55,15 @@ else{
 	while ($row = mysqli_fetch_object($result)){
 		$data[]=$row;
 		
-		$currentDeckId = $data[$counter].deck_id;
-		echo $currentDeckId;
+		/*print_r($data);
+		echo "<br>";
+		print_r($data[$counter]);
+		echo "<br>";*/
+		$currentDeckId = $data[$counter]->deck_id;
+		/*echo $currentDeckId;
+		echo "<br>";*/
 		
+		//get rating for the current deck
 		$query = "SELECT AVG(dr.rating) AS rating_average
 			FROM deck_ratings dr
 			INNER JOIN decks d
@@ -66,10 +72,15 @@ else{
 		$stmt = $conn->prepare($query);
 		$stmt->bind_param('i', $currentDeckId);
 		$stmt->execute();
-		$result = $stmt->get_result();
-		$ratingResult = $result->fetch_assoc();
-		$rating = $ratingResult['rating_average'];
+		$ratingResult = $stmt->get_result();
+		$rating = $ratingResult->fetch_assoc();
+		$deckRating = $rating['rating_average'];
 		$stmt->close();
+		
+		/*print_r($ratingResult);
+		echo "<br>";
+		print_r($rating);
+		echo "<br>";*/
 		
 		$ratings[] = $rating;
 		
