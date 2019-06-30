@@ -10,6 +10,7 @@ require_once 'config/db.php';
 require_once 'deck.class.php';
 
 $data = array();
+$ratings = array();
 
 // fetch data from POST
 $deckname = $_POST['deckname'];
@@ -50,32 +51,37 @@ if ($resultCount < 0)
 	
 }
 else{
-	//store retrieved decks
-	/*$decks = array();
-
-	while ($row = mysqli_fetch_assoc($result)) {
-		$deck_id = $row['deck_id'];
-		$deckname = $row['deckname'];
-		$description = $row['description'];
-		$cardClan = $row['clan'];
-		$user_id = $row['user_id'];
-		$username = $row['username'];
-		
-		$newCard = new Card($cards_id, $name, $set, $imageFile, $cardClan, $cardGrade, $type);
-		//$newCard->displayCardInfo();
-		//array_push($cards, $newCard);
-		array_push($decks, $newCard);
-	}
-	
-	echo json_encode($decks);*/
-	
+	$counter = 0;
 	while ($row = mysqli_fetch_object($result)){
 		$data[]=$row;
+		
+		$currentDeckId = $data[$counter].deck_id;
+		echo $currentDeckId;
+		
+		$query = "SELECT AVG(dr.rating) AS rating_average
+			FROM deck_ratings dr
+			INNER JOIN decks d
+			  ON dr.deck_id = d.deck_id
+			WHERE d.deck_id = ?";
+		$stmt = $conn->prepare($query);
+		$stmt->bind_param('i', $currentDeckId);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$ratingResult = $result->fetch_assoc();
+		$rating = $ratingResult['rating_average'];
+		$stmt->close();
+		
+		$ratings[] = $rating;
+		
+		$counter = $counter + 1;
 	}
 	
-	echo json_encode($data);
+	//echo json_encode($data);
+	$decksAndRatings = array();
+	$decksAndRatings['decks'] = $data;
+	$decksAndRatings['ratings'] = $ratings;
+	
+	echo json_encode($decksAndRatings);
 }
-
-
 
 ?>
