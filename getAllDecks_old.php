@@ -14,12 +14,7 @@ require_once 'config/db.php';
 $data = array();
 
 // sql statements to get all decks
-$query = "SELECT d.deck_id, d.deckname, d.description, d.clan, od.user_id, u.username   
-FROM decks d
-INNER JOIN ownsdeck od
-    on d.deck_id = od.deck_id
-INNER JOIN users u
-    on od.user_id = u.id";
+$query = "SELECT * FROM decks";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $result = $stmt->get_result();
