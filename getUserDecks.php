@@ -12,6 +12,7 @@ session_start();
 require_once 'config/db.php';
 
 $data = array();
+$ratings = array();
 	
 $user_id = $_POST['user_id'];
 // sql statements to get only user's decks
@@ -34,11 +35,47 @@ if ($resultCount <= 0)
 	$errors['cards_not_found'] = "Could not retrieve cards";
 }
 else{
-	//store retrieved cards
+	$counter = 0;
 	while ($row = mysqli_fetch_object($result)){
 		$data[]=$row;
+		
+		/*print_r($data);
+		echo "<br>";
+		print_r($data[$counter]);
+		echo "<br>";*/
+		$currentDeckId = $data[$counter]->deck_id;
+		/*echo $currentDeckId;
+		echo "<br>";*/
+		
+		//get rating for the current deck
+		$query = "SELECT AVG(dr.rating) AS rating_average
+			FROM deck_ratings dr
+			INNER JOIN decks d
+			  ON dr.deck_id = d.deck_id
+			WHERE d.deck_id = ?";
+		$stmt = $conn->prepare($query);
+		$stmt->bind_param('i', $currentDeckId);
+		$stmt->execute();
+		$ratingResult = $stmt->get_result();
+		$rating = $ratingResult->fetch_assoc();
+		$deckRating = $rating['rating_average'];
+		$stmt->close();
+		
+		/*print_r($ratingResult);
+		echo "<br>";
+		print_r($rating);
+		echo "<br>";*/
+		
+		$ratings[] = $rating;
+		
+		$counter = $counter + 1;
 	}
 	
-	echo json_encode($data);
+	//echo json_encode($data);
+	$decksAndRatings = array();
+	$decksAndRatings['decks'] = $data;
+	$decksAndRatings['ratings'] = $ratings;
+	
+	echo json_encode($decksAndRatings);
 }
 ?>
