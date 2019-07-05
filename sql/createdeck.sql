@@ -79,6 +79,14 @@ create table deckcontains(
     foreign key (cards_id) references cards_all(cards_id)
 );
 
+-- SELECT * FROM deckcontains;
+
+-- create trigger four_card_limit_on_deckcontains 
+-- before insert on deckcontains
+-- FOR EACH ROW
+
+select COUNT(*) as inserted_cards from deckcontains where deck_id=2 and cards_id=3202;
+
 SELECT * 
 FROM decks d
 INNER JOIN deckcontains dc
