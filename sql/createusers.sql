@@ -6,7 +6,16 @@ create table users(
     token varchar(100),
     password varchar(255),
     primary key (id)
-)
+);
+
+ALTER TABLE users
+ADD profile_picture varchar(200);
+
+-- set default profile picture
+SET SQL_SAFE_UPDATES = 0;
+UPDATE users
+SET profile_picture='vanguard_blue.jpg';
+SET SQL_SAFE_UPDATES = 1;
 
 select * from users;
 

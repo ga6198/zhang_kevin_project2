@@ -43,7 +43,7 @@ else
 	$token = bin2hex(random_bytes(50));
 	$verified = false;
 
-	$sql = "INSERT INTO users (username, email, verified, token, password) VALUES (?, ?, ?, ?, ?)";
+	$sql = "INSERT INTO users (username, email, verified, token, password, profile_picture) VALUES (?, ?, ?, ?, ?, vanguard_blue.jpg)";
 	$stmt = $conn->prepare($sql);
 	$stmt->bind_param('ssiss', $username, $email, intval($verified), $token, $password);
 	if ($stmt->execute())
