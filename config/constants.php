@@ -7,7 +7,7 @@ define('PASSWORD', 'bolter82');
 
 
 define('DB_HOST', 'localhost');
-define('DB_USER', 'john');
-define('DB_PASS', 'pass1234');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 define('DB_NAME', 'vanguard');
 ?>
