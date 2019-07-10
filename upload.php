@@ -1,15 +1,13 @@
 <?php
-/*
-// Set new file name
-$new_image_name = "newimage_".mt_rand().".jpg";
+//work around CORS
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST');
+header("Access-Control-Allow-Headers: X-Requested-With");
 
-//store image name in database
+session_start();
 
+require_once 'config/db.php';
 
-// upload file
-move_uploaded_file($_FILES["file"]["tmp_name"], 'profileImages/'.$new_image_name);
-echo $new_image_name ;
-*/
 $user_id = $_POST['user_id'];
 
 $imgdata = $_POST['img_data'];
@@ -23,7 +21,8 @@ $mime_type = finfo_buffer($f, $image, FILEINFO_MIME_TYPE);
 //echo $mime_type;
 
 //$file_type = end(split('/',$mime_type)); //get last part of mime type. e.g. jpg, png
-$file_type = end(preg_split('/\//',$mime_type)); //get last part of mime type by splitting on /. e.g. jpg, png
+$file_split = preg_split('/\//',$mime_type); //get last part of mime type by splitting on /. e.g. jpg, png
+$file_type = end($file_split);
 //echo $file_type;
 
 //save image to profile picture folder
@@ -33,6 +32,18 @@ $full_file_dir = "profileImages/" . $file_name;
 file_put_contents($full_file_dir, $image);
 
 //store image name in database
+$query = "UPDATE users SET profile_picture = ? WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param('si', $file_name, $user_id);
+$stmt->execute();
+$stmt->close();
+
+
+//echo picture
+//$contentHeader = "Content-type: image/" . $file_type;
+//header($contentHeader);
+//echo $image;
+echo $full_file_dir;
 
 
 //echo $image;
