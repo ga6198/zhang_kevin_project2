@@ -31,7 +31,7 @@ if(empty($creator) || $creator == "")
 $creator = "%" . $creator . "%"; //add SQL wildcards to beginning and end of creator
 
 // get decks based on input
-$query = "SELECT d.deck_id, d.deckname, d.description, d.clan, od.user_id, u.username   
+$query = "SELECT d.deck_id, d.deckname, d.description, d.clan, od.user_id, u.username, u.profile_picture    
 FROM decks d
 INNER JOIN ownsdeck od
     on d.deck_id = od.deck_id
