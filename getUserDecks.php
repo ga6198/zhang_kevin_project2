@@ -32,7 +32,10 @@ $stmt->close();
 
 if ($resultCount <= 0)
 {
-	$errors['cards_not_found'] = "Could not retrieve cards";
+	//$errors['cards_not_found'] = "Could not retrieve cards";
+	//echo empty array
+	$decksAndRatings = array();
+	echo json_encode($decksAndRatings);
 }
 else{
 	$counter = 0;
