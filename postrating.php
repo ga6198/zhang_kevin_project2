@@ -16,9 +16,9 @@ $rating = $_POST['rating'];
 $user_id = $_POST['user_id'];
 
 // check if user has already posted rating
-$ratingCountQuery = "SELECT * FROM deck_ratings WHERE user_id = ?";
+$ratingCountQuery = "SELECT * FROM deck_ratings WHERE user_id = ? AND deck_id = ?";
 $stmt = $conn->prepare($ratingCountQuery);
-$stmt->bind_param('i', $user_id);
+$stmt->bind_param('ii', $user_id, $deck_id);
 $stmt->execute();
 $result = $stmt->get_result();
 //$resultCount = $result->num_rows; 
