@@ -104,3 +104,7 @@ inner join (select deckcontains_id from deckcontains where deck_id=6 and cards_i
 on dc.deckcontains_id = dcid.deckcontains_id;
 -- deleting a card from deck
 -- delete dc.* from deckcontains dc where deckcontains_id in (select deckcontains_id from (select deckcontains_id from deckcontains where deck_id=6 and cards_id=4872 limit 1) x);
+
+-- Add message column to deck-ratings
+ALTER TABLE deck_ratings
+ADD message VARCHAR(255);

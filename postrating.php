@@ -13,6 +13,7 @@ require_once 'config/db.php';
 
 $deck_id = $_POST['deck_id'];
 $rating = $_POST['rating'];
+$message = $_POST['message'];
 $user_id = $_POST['user_id'];
 
 // check if user has already posted rating
@@ -30,9 +31,9 @@ if ($resultCount > 0){
 }
 else{
 	// sql statements to post rating
-	$query = "INSERT INTO deck_ratings (deck_id, user_id, rating) VALUES (?, ?, ?)";
+	$query = "INSERT INTO deck_ratings (deck_id, user_id, rating, message) VALUES (?, ?, ?, ?)";
 	$stmt = $conn->prepare($query);
-	$stmt->bind_param('iii', $deck_id, $user_id, $rating);
+	$stmt->bind_param('iiis', $deck_id, $user_id, $rating, $message);
 	$stmt->execute();
 	$stmt->close();
 }
