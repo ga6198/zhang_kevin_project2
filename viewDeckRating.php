@@ -35,8 +35,9 @@ if ($resultCount > 0){
 		$rating = $row['rating'];
 		$message = $row['message'];
 		$profile_picture = $row['profile_picture'];
+		$user_id = $row['user_id'];
 		
-		$currentRating = new Rating($username, $rating, $message, $profile_picture);
+		$currentRating = new Rating($username, $rating, $message, $profile_picture, $user_id);
 
 		array_push($ratingArray, $currentRating);
 		//print_r($row);
@@ -46,5 +47,9 @@ if ($resultCount > 0){
 	
 	echo json_encode($ratingsArray);
 
+}
+else
+{
+	echo json_encode("No Ratings");
 }
 ?>
